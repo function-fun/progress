@@ -1,211 +1,186 @@
-// 定义变量
-$font-family: Arial, sans-serif;
-$background-color: #f4f4f4;
-$primary-color: #9370DB;
-$danger-color: #dc3545;
-
+// 取消灰色背景
 body {
-  font-family: $font-family;
-  margin: 0;
-  padding: 0;
-  background-color: $background-color;
+  background-color: white;
 }
 
-// 头部样式
-.header {
-  position: relative;
-  padding: 15px;
-  background-color: #fff;
-
-  h1 {
-    font-size: 24px;
-    margin: 0;
-  }
-}
-
-// 添加按钮样式
-.add-button {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  background-color: $primary-color;
-  color: #fff;
-  border: none;
-  border-radius: 50%;
-  width: 35px;
-  height: 35px;
-  font-size: 20px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-// 进度列表容器样式
-.progress-list {
-  padding: 15px;
-}
-
-// 单个进度项样式
+// 进度条分割线
 .progress-item {
-  background-color: #fff;
-  border-radius: 10px;
-  padding: 15px;
-  margin-bottom: 15px;
-  position: relative;
-  padding-top: 30px; // 为按钮留出空间
-}
-
-// 进度条和标题容器样式
-.progress-info {
-  display: flex;
-  align-items: center;
-  margin-bottom: 5px;
-}
-
-// 进度条标题样式
-.progress-title {
-  font-size: 16px;
-  margin-right: 10px;
-  min-width: 80px;
-}
-
-// 进度条容器样式
-.progress-bar-container {
-  background-color: #e9ecef;
-  border-radius: 10px;
-  height: 25px;
-  flex: 1;
-  position: relative;
-}
-
-// 进度条样式
-.progress-bar {
-  border-radius: 10px;
-  height: 100%;
-  width: 0%;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 10px;
-  overflow: hidden;
-}
-
-// 进度条内数值样式
-.progress-value {
-  color: #fff;
-  font-size: 12px;
-  z-index: 1;
-  white-space: nowrap;
-}
-
-// 弹出框样式
-.modal {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  justify-content: center;
-  align-items: center;
-
-  &.show {
-    display: flex;
-  }
-}
-
-// 弹出框内容样式
-.modal-content {
-  background-color: #fff;
-  border-radius: 10px;
-  padding: 15px;
-  width: 300px;
-}
-
-// 输入框组样式
-.input-group {
-  display: flex;
-  align-items: center;
+  border-bottom: 1px solid #efefef;
+  padding-bottom: 10px;
   margin-bottom: 10px;
 }
 
-// 输入框标签样式
-.input-label {
-  font-weight: bold;
-  margin-right: 10px;
-  min-width: 60px;
-}
-
-// 输入框样式
-.input-field {
-  flex: 1;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-sizing: border-box;
-}
-
-// 按钮容器样式
-.button-container {
+.header {
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  h1 {
+    font-size: 16px;
+  }
+}
+
+.progress-list {
+  padding: 10px;
+}
+
+.progress-info-row {
+  display: flex;
+  align-items: center;
   justify-content: space-between;
 }
 
-// 按钮样式
-.modal-button {
-  background-color: $primary-color;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  padding: 8px 15px;
-  cursor: pointer;
-  width: 48%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-// 编辑按钮样式
-.edit-button {
-  position: absolute;
-  top: 10px;
-  right: 40px;
-  background-color: $primary-color;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  padding: 5px;
-  cursor: pointer;
+.progress-title {
+  margin-right: 10px;
   font-size: 14px;
   display: flex;
   align-items: center;
-  justify-content: center;
 }
 
-// 删除按钮样式
-.delete-button {
+.progress-bar-container {
+  flex: 1;
+  margin-right: 10px;
+  background-color: #f3f3f3;
+  border-radius: 10px;
+  position: relative;
+}
+
+.progress-bar {
+  height: 20px;
+  line-height: 20px;
+  text-align: center;
+  color: white;
+  border-radius: 10px;
+}
+
+.progress-value {
+  font-size: 12px;
+  display: flex;
   position: absolute;
-  top: 10px;
+  left: 10px;
+  top: 0;
+}
+.progress-percentage {
+  font-size: 12px;
+  display: flex;
+  position: absolute;
   right: 10px;
-  background-color: $danger-color;
-  color: #fff;
+  top: 0;
+}
+
+.edit-button,
+.delete-button {
+  background-color: transparent;
   border: none;
-  border-radius: 5px;
-  padding: 5px;
   cursor: pointer;
+  margin-left: 10px;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal.show {
+  display: block;
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 360px;
+  border-radius: 10px;
+  h2 {
+    font-size: 16px;
+  }
+}
+
+.input-group {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.input-label {
+  display: block;
   font-size: 14px;
+  flex-grow: 0;
+  flex-shrink: 0;
+  margin-right: 10px;
+}
+
+.input-field {
+  width: 100%;
+  height: 28px;
+  padding: 5px 10px;
+  border: 1px solid #e3e3e3;
+  border-radius: 10px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.modal-button {
+  background-color: #DDA0DD; // 浅紫色
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 20px;
+  font-size: 14px;
+
+  path {
+    fill: white;
+  }
 }
 
-// SVG 图标样式
 .button-icon {
-  width: 1em;
-  height: 1em;
-  fill: currentColor;
+  width: 20px;
+  height: 20px;
   margin-right: 5px;
+  vertical-align: middle;
+}
+
+.add-button {
+  background-color: #DDA0DD; // 浅紫色
+  color: white;
+  border: none;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 50%; // 圆形按钮
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .button-icon {
+    margin-right: 0;
+    path {
+      fill: white;
+    }
+  }
 }

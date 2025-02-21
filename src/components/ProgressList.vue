@@ -3,7 +3,7 @@
     <!-- 头部 -->
     <div class="header">
       <h1>进度条列表</h1>
-      <button class="add-button" @click="openAddModal">
+      <button class="add-button rounded-button" @click="openAddModal">
         <svg class="button-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
           <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
         </svg>
@@ -18,19 +18,29 @@
         :data-step="item.step"
         :data-unit="item.unit"
       >
-        <div class="progress-info">
+        <div class="progress-info-row">
           <div class="progress-title">{{ item.title }}</div>
           <div class="progress-bar-container">
             <div
               class="progress-bar"
-              :style="{ backgroundColor: item.color, width: (item.current / item.total) * 100 + '%' }"
+              :style="{ backgroundColor: item.color, width: ((item.current > item.total ? 100 : (item.current / item.total) * 100).toFixed(2)) + '%' }"
             >
-              <div class="progress-value">{{ item.current }} / {{ item.total }}, {{ item.unit }}</div>
+              
             </div>
+            <div class="progress-value">{{ item.current }} / {{ item.total }}, {{ item.unit }}</div>
+            <div class="progress-percentage">{{((item.current > item.total ? 100 : (item.current / item.total) * 100).toFixed(2))}}%</div>
           </div>
+          <button class="edit-button" @click="openEditModal(item)">
+            <svg class="button-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
+            </svg>
+          </button>
+          <button class="delete-button" @click="deleteProgress(index)">
+            <svg class="button-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" />
+            </svg>
+          </button>
         </div>
-        <button class="edit-button" @click="openEditModal(item)">编辑</button>
-        <button class="delete-button" @click="deleteProgress(index)">删除</button>
       </div>
     </div>
     <!-- 弹出框 -->
@@ -157,116 +167,19 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, watch } from 'vue';
-
-// 定义进度项的接口
-interface ProgressItem {
-  title: string;
-  current: number;
-  step: number;
-  total: number;
-  unit: string;
-  color: string;
-}
-
-const macaronColors = ['#FFB6C1', '#FFDAB9', '#B0E0E6', '#98FB98', '#DDA0DD', '#F0E68C'];
-
-// 存储进度项的数组
-const progressItems = ref<ProgressItem[]>([]);
-// 当前编辑的项的索引
-const editIndex = ref<number | null>(null);
-// 新进度项
-const newProgress = ref<ProgressItem>({
-  title: '',
-  current: 0,
-  step: 0,
-  total: 0,
-  unit: '',
-  color: macaronColors[0],
-});
-// 编辑的进度项
-const editProgress = ref<ProgressItem>({
-  title: '',
-  current: 0,
-  step: 0,
-  total: 0,
-  unit: '',
-  color: macaronColors[0],
-});
-// 添加模态框可见性
-const addModalVisible = ref<boolean>(false);
-// 编辑模态框可见性
-const editModalVisible = ref<boolean>(false);
-
-// 页面加载时从本地存储加载数据
-onMounted(() => {
-  const storedData = localStorage.getItem('progressData');
-  if (storedData) {
-    progressItems.value = JSON.parse(storedData) as ProgressItem[];
-  }
-});
-
-// 监听 progressItems 变化，更新本地存储
-watch(progressItems, (newValue) => {
-  localStorage.setItem('progressData', JSON.stringify(newValue));
-}, { deep: true });
-
-// 打开添加弹出框
-const openAddModal = () => {
-  addModalVisible.value = true;
-  // 重置新进度项
-  newProgress.value = {
-    title: '',
-    current: 0,
-    step: 0,
-    total: 0,
-    unit: '',
-    color: macaronColors[0],
-  };
-};
-
-// 关闭添加弹出框
-const closeAddModal = () => {
-  addModalVisible.value = false;
-};
-
-// 打开编辑弹出框
-const openEditModal = (item: ProgressItem) => {
-  editIndex.value = progressItems.value.indexOf(item);
-  editProgress.value = { ...item };
-  editModalVisible.value = true;
-};
-
-// 关闭编辑弹出框
-const closeEditModal = () => {
-  editModalVisible.value = false;
-  editIndex.value = null;
-};
-
-// 添加新进度项
-const addProgress = () => {
-  if (
-    newProgress.value.title &&
-    newProgress.value.current !== null &&
-    newProgress.value.step !== null &&
-    newProgress.value.total !== null &&
-    newProgress.value.unit
-  ) {
-    progressItems.value.push({ ...newProgress.value });
-    closeAddModal();
-  }
-};
-
-// 保存编辑
-const saveEdit = () => {
-  if (editIndex.value !== null) {
-    progressItems.value[editIndex.value] = { ...editProgress.value };
-    closeEditModal();
-  }
-};
-
-// 删除进度项
-const deleteProgress = (index: number) => {
-  progressItems.value.splice(index, 1);
-};
+import {
+  progressItems,
+  editIndex,
+  newProgress,
+  editProgress,
+  addModalVisible,
+  editModalVisible,
+  openAddModal,
+  closeAddModal,
+  openEditModal,
+  closeEditModal,
+  addProgress,
+  saveEdit,
+  deleteProgress
+} from './ProgressList.ts';
 </script>
